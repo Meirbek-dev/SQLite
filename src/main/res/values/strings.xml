@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">BMK01</string>
+    <string name="app_name">Notepad Database</string>
+    <string name="Введите_название_службы">Введите фразу или её автора</string>
+    <string name="Загрузка_данных">Загрузка данных…</string>
+    <string name="Выход">Выход</string>
+    <string name="Написать_предложение_автору">Написать предложение автору</string>
+    <string name="my_email">meirbek.b2k@gmail.com</string>
+    <string name="Добавьте_еще_номер">Добавьте еще номер</string>
+    <string name="Предлагаю_такой_номер">Предлагаю такой номер в вашу программу:</string>
+    <string name="Посылка_письма">Посылка письма…</string>
+    <string name="Нет_установленного_почтового_клиента">Нет установленного почтового клиента, увы (</string>
+    <string name="Большой_шрифт">Большой шрифт</string>
 </resources>
