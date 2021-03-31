@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Notepad Database</string>
-    <string name="Введите_название_службы">Введите фразу или её автора</string>
+    <string name="Введите_название_службы">Введите данные блокнота</string>
     <string name="Загрузка_данных">Загрузка данных…</string>
     <string name="Выход">Выход</string>
     <string name="Написать_предложение_автору">Написать предложение автору</string>
