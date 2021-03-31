@@ -14,15 +14,15 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class MySQLite extends SQLiteOpenHelper {
-    static final String DATABASE_NAME = "notepad";
+    static final String DATABASE_NAME = "notepads";
     static final String TABLE_NAME = "emergency_service";
     static final String ID = "id";
-    static final String QUOTE = "quote";
-    static final String QUOTE_LC = "quote_lc"; // // Поле с цитатой в нижнем регистре
-    static final String QUOTER = "quoter";
-    static final String ASSETS_FILE_NAME = "notepad.txt";
+    static final String NOTEPAD = "notepad";
+    static final String NOTEPAD_LC = "notepad_lc"; // // Поле с цитатой в нижнем регистре
+    static final String PRICE = "price";
+    static final String ASSETS_FILE_NAME = "notepads.txt";
     static final String DATA_SEPARATOR = "*";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private final Context context;
 
     public MySQLite(Context context) {
@@ -34,9 +34,9 @@ public class MySQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_NAME + "("
                 + ID + " INTEGER PRIMARY KEY,"
-                + QUOTE + " TEXT,"
-                + QUOTE_LC + " TEXT,"
-                + QUOTER + " TEXT" + ")";
+                + NOTEPAD + " TEXT,"
+                + NOTEPAD_LC + " TEXT,"
+                + PRICE + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
         loadDataFromAsset(context, ASSETS_FILE_NAME, db);
     }
@@ -48,11 +48,11 @@ public class MySQLite extends SQLiteOpenHelper {
     }
 
     // Добавление новой цитаты в БД
-    public void addData(SQLiteDatabase db, String quote, String quoter) {
+    public void addData(SQLiteDatabase db, String notepad, String price) {
         ContentValues values = new ContentValues();
-        values.put(QUOTE, quote);
-        values.put(QUOTE_LC, quote.toLowerCase());
-        values.put(QUOTER, quoter);
+        values.put(NOTEPAD, notepad);
+        values.put(NOTEPAD_LC, notepad.toLowerCase());
+        values.put(PRICE, price);
         db.insert(TABLE_NAME, null, values);
     }
 
@@ -71,9 +71,9 @@ public class MySQLite extends SQLiteOpenHelper {
                 String strTrim = str.trim(); // Убираем у строки пробелы с концов
                 if (!strTrim.equals("")) { // Если строка не пустая, то
                     StringTokenizer st = new StringTokenizer(strTrim, DATA_SEPARATOR); // Нарезаем ее на части
-                    String quote = st.nextToken().trim(); // Извлекаем из строки название организации без пробелов на концах
-                    String quoter = st.nextToken().trim(); // Извлекаем из строки номер организации без пробелов на концах
-                    addData(db, quote, quoter); // Добавляем название и телефон в базу данных
+                    String notepad = st.nextToken().trim(); // Извлекаем из строки название организации без пробелов на концах
+                    String price = st.nextToken().trim(); // Извлекаем из строки номер организации без пробелов на концах
+                    addData(db, notepad, price); // Добавляем название и телефон в базу данных
                 }
             }
 
@@ -96,11 +96,11 @@ public class MySQLite extends SQLiteOpenHelper {
         String selectQuery; // Переменная для SQL-запроса
 
         if (filter.equals("")) {
-            selectQuery = "SELECT  * FROM " + TABLE_NAME + " ORDER BY " + QUOTE;
+            selectQuery = "SELECT  * FROM " + TABLE_NAME + " ORDER BY " + NOTEPAD;
         } else {
-            selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE (" + QUOTE_LC + " LIKE '%" +
+            selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE (" + NOTEPAD_LC + " LIKE '%" +
                     filter.toLowerCase() + "%'" +
-                    " OR " + QUOTER + " LIKE '%" + filter + "%'" + ") ORDER BY " + QUOTE;
+                    " OR " + PRICE + " LIKE '%" + filter + "%'" + ") ORDER BY " + NOTEPAD;
         }
         SQLiteDatabase db = this.getReadableDatabase(); // Доступ к БД
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectQuery, null); // Выполнение SQL-запроса
@@ -110,9 +110,9 @@ public class MySQLite extends SQLiteOpenHelper {
         int num = 0;
         if (cursor.moveToFirst()) { // Если есть хоть одна запись, то
             do { // Цикл по всем записям результата запроса
-                String quote = cursor.getString(1); // Чтение цитатой
-                String quoter = cursor.getString(3); // Чтение автора цитаты
-                data.append(++num).append(") ").append(quote).append(" © ").append(quoter).append("\n");
+                String notepad = cursor.getString(1); // Чтение цитатой
+                String price = cursor.getString(3); // Чтение автора цитаты
+                data.append(++num).append(") ").append(notepad).append(". Цена: ").append(price).append(" тг").append("\n");
             } while (cursor.moveToNext()); // Цикл пока есть следующая запись
         }
         return data.toString(); // Возвращение результата
